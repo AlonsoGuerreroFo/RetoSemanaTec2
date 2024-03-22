@@ -43,10 +43,10 @@ def move():
 
     if head == food:
         print('Snake:', len(snake))
-        food.x = randrange(-15, 15) * 10
-        food.y = randrange(-15, 15) * 10
     else:
         snake.pop(0)
+
+    move_food()
 
     clear()
 
@@ -57,6 +57,17 @@ def move():
     update()
     ontimer(move, 100)
 
+def move_food():
+    "Move the food one step randomly without leaving the boundaries."
+    directions = [vector(10, 0), vector(-10, 0), vector(0, 10), vector(0, -10)]
+    move = directions[randrange(0, 4)] # Selecciona una dirección al azar
+    new_food_position = food + move
+
+    if inside(new_food_position):
+        food.move(move)
+    else:
+        # Intenta otra dirección si la nueva posición está fuera de límites
+        move_food()
 
 setup(420, 420, 370, 0)
 hideturtle()
